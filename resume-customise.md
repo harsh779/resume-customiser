@@ -2,8 +2,8 @@
 
 Local-first. No API cost. Base resume = source of truth. No invented facts, no fabricated metrics.
 
-SCRIPTS = C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts
-REPO    = C:\Users\Harsh\OneDrive\Desktop\Resume\applications
+SCRIPTS = {{SCRIPTS_DIR}}
+REPO    = {{REPO_DIR}}
 
 ---
 
@@ -61,7 +61,7 @@ Do not proceed until all four are provided.
 ## Step 2 — Parse Resume
 
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\parse_resume.py" "<resume_path>"
+python "{{SCRIPTS_DIR}}\parse_resume.py" "<resume_path>"
 ```
 
 Capture stdout as RESUME_TEXT. If error, report it and stop.
@@ -72,7 +72,7 @@ Capture stdout as RESUME_TEXT. If error, report it and stop.
 
 **If user gave a URL:**
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\fetch_jd.py" "<url>"
+python "{{SCRIPTS_DIR}}\fetch_jd.py" "<url>"
 ```
 - Exit code 0 + stdout → use as JD_TEXT. Continue.
 - Exit code 2 (PASTE_REQUIRED) → tell user: "Could not fetch this URL automatically. Please paste the job description text directly into the chat." Wait for paste, then use as JD_TEXT.
@@ -206,11 +206,11 @@ Rewrite resume to better match JD. Apply these rules strictly:
 
 Folder name format: `<Company>_<Role>_<YYYY-MM-DD>` (spaces → underscores, no special chars)
 
-Output DOCX filename: `Harsh_<CompanyName>.docx` (spaces → underscores, no special chars)
+Output DOCX filename: `{{FIRST_NAME}}_<CompanyName>.docx` (spaces → underscores, no special chars)
 
 ```
 REPO\<Company>_<Role>_<date>\
-├── Harsh_<CompanyName>.docx
+├── {{FIRST_NAME}}_<CompanyName>.docx
 └── jd.txt
 ```
 
@@ -219,12 +219,12 @@ Save JD_TEXT to `jd.txt` in that folder.
 **8b. Write JSON to temp file:**
 
 Save the tailored resume JSON to a temp file:
-`C:\Users\Harsh\AppData\Local\Temp\resume_temp.json`
+`{{TEMP_DIR}}\resume_temp.json`
 
 **8c. Build DOCX:**
 
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\build_docx.py" "<temp_json_path>" "<repo_folder>\Harsh_<CompanyName>.docx"
+python "{{SCRIPTS_DIR}}\build_docx.py" "<temp_json_path>" "<repo_folder>\{{FIRST_NAME}}_<CompanyName>.docx"
 ```
 
 ---
@@ -256,7 +256,7 @@ If output is `OK`: continue silently.
 After successful DOCX build, log to tracker:
 
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\tracker.py" add "<json_entry>"
+python "{{SCRIPTS_DIR}}\tracker.py" add "<json_entry>"
 ```
 
 JSON entry format:
@@ -304,7 +304,7 @@ Process multiple job applications from a CSV file in one run.
 ```
 company,role,jd
 Google,Senior Analyst,https://careers.google.com/jobs/...
-Unilever,Insights Manager,C:\Users\Harsh\Desktop\unilever_jd.txt
+Unilever,Insights Manager,C:\path\to\unilever_jd.txt
 McKinsey,Associate,We are looking for an Associate to join...
 ```
 
@@ -375,7 +375,7 @@ Then continue:
 - Analyse JD (INTERNAL)
 - Match/gap against resume (INTERNAL)
 - Tailor resume
-- Save to `REPO\<Company>_<Role>_<date>\Harsh_<CompanyName>.docx`
+- Save to `REPO\<Company>_<Role>_<date>\{{FIRST_NAME}}_<CompanyName>.docx`
 - Save `jd.txt`
 - Smoke test
 - Log to tracker
@@ -390,7 +390,7 @@ After all rows processed, show one table:
 
 | # | Company | Role | Strong | Partial | Gaps | Output |
 |---|---|---|---|---|---|---|
-| 1 | Google | Senior Analyst | 7 | 3 | 2 | Harsh_Google.docx ✓ |
+| 1 | Google | Senior Analyst | 7 | 3 | 2 | {{FIRST_NAME}}_Google.docx ✓ |
 | 2 | Unilever | Insights Manager | 5 | 4 | 4 | FAILED: URL error |
 
 Total processed / total failed.
@@ -401,7 +401,7 @@ List any gaps per company only if user asks.
 ## Step T — Tracker View
 
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\tracker.py" list
+python "{{SCRIPTS_DIR}}\tracker.py" list
 ```
 
 Show output. Also offer:
@@ -417,7 +417,7 @@ Ask user for application ID and new status if not already given.
 Valid statuses: `tailored | applied | phone_screen | interview | offer | rejected | withdrawn`
 
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\tracker.py" update <id> <status>
+python "{{SCRIPTS_DIR}}\tracker.py" update <id> <status>
 ```
 
 Confirm the update to the user.
@@ -428,7 +428,7 @@ Confirm the update to the user.
 
 If `python-docx`, `pdfplumber`, `requests`, or `beautifulsoup4` are missing:
 ```
-python "C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts\setup.py"
+python "{{SCRIPTS_DIR}}\setup.py"
 ```
 
 If JD URL fetch fails, ask user to paste JD text directly instead.

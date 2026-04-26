@@ -18,6 +18,7 @@ import sys
 import shutil
 import subprocess
 import platform
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOME = os.path.expanduser("~")
@@ -54,7 +55,8 @@ def install():
 
     print(f"Scripts will install to : {scripts_dest}")
     print(f"Command file            : {command_file}")
-    repo_dir = ask(f"Applications repo folder", default_repo)
+    repo_dir = ask("Applications repo folder", default_repo)
+    first_name = ask("Your first name (used in output resume filenames)", "YourName")
     print()
 
     # --- Copy scripts ---
@@ -80,15 +82,11 @@ def install():
     with open(skill_template, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Replace placeholder paths with actual paths
-    content = content.replace(
-        r"C:\Users\Harsh\.claude\plugins\cache\local\resume-customiser\1.0.0\scripts",
-        scripts_dest
-    )
-    content = content.replace(
-        r"C:\Users\Harsh\OneDrive\Desktop\Resume\applications",
-        repo_dir
-    )
+    # Replace placeholder tokens with user-specific paths
+    content = content.replace("{{SCRIPTS_DIR}}", scripts_dest)
+    content = content.replace("{{REPO_DIR}}", repo_dir)
+    content = content.replace("{{FIRST_NAME}}", first_name)
+    content = content.replace("{{TEMP_DIR}}", tempfile.gettempdir())
 
     with open(command_file, "w", encoding="utf-8") as f:
         f.write(content)
@@ -119,10 +117,7 @@ def install():
     tracker_path = p(scripts_dest, "tracker.py")
     with open(tracker_path, "r", encoding="utf-8") as f:
         tracker = f.read()
-    tracker = tracker.replace(
-        r'r"C:\Users\Harsh\OneDrive\Desktop\Resume\applications"',
-        f'r"{repo_dir}"'
-    )
+    tracker = tracker.replace('r"{{REPO_DIR}}"', f'r"{repo_dir}"')
     with open(tracker_path, "w", encoding="utf-8") as f:
         f.write(tracker)
     print("  tracker.py updated with your repo path.")

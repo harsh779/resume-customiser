@@ -1,7 +1,39 @@
-*.tmp
-*.log
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Secrets and local config
 .env
+*.env
+config.local.*
+
+# Generated resume outputs — private, kept local only
 applications/
-applications.json
+batch_output/
+*.docx
+*.pdf
+
+# Allow sample files to be committed
+!samples/*.docx
+!samples/*.pdf
+
+# Editor and OS artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp

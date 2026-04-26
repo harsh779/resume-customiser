@@ -11,8 +11,7 @@ Commands:
 Status values: tailored | applied | phone_screen | interview | offer | rejected | withdrawn
 
 Tracker file lives at: <REPO_DIR>/applications.json
-REPO_DIR defaults to C:\\Users\\Harsh\\OneDrive\\Desktop\\Resume\\applications
-Override with env var RESUME_REPO_PATH.
+REPO_DIR is set by install.py. Override anytime with env var RESUME_REPO_PATH.
 """
 import sys
 import os
@@ -26,7 +25,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 REPO_DIR = os.environ.get(
     "RESUME_REPO_PATH",
-    r"C:\Users\Harsh\OneDrive\Desktop\Resume\applications"
+    r"{{REPO_DIR}}"
 )
 TRACKER_FILE = os.path.join(REPO_DIR, "applications.json")
 

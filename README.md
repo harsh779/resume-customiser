@@ -1,51 +1,110 @@
 # Resume Customiser — Claude Code Skill
 
-Local-first resume tailoring powered by Claude Code (Pro subscription). No API cost.  
-Tailors your resume to a specific job description without inventing facts.
+**A local-first career operating system for evidence-based, ATS-safe job applications.**
 
-## What it does
+Tailors your resume to any job description — without inventing facts, skills, tools, or metrics you don't actually have.
 
-1. Reads your base resume (DOCX or PDF)
-2. Reads the job description (URL or paste)
-3. Analyses both in context — role requirements vs your evidence
-4. Produces a match/gap table
-5. Rewrites your resume using only existing evidence (no fabrication)
-6. Saves an ATS-safe DOCX + tracks the application
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
+[![Claude Code](https://img.shields.io/badge/powered%20by-Claude%20Code-orange)](https://claude.ai/code)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-## Requirements
+---
 
-- [Claude Code](https://claude.ai/code) with Pro subscription
-- Python 3.9+
-- Git (optional, for versioning your applications)
+## Why This Exists
 
-## Install
+Sending the same resume to every job is ineffective. Manually rewriting it for each application is slow. Generic AI resume tools hallucinate credentials and produce undefendable claims.
+
+This tool solves all three:
+
+- Your base resume is the **single source of truth** — nothing is added that isn't already there
+- JD analysis is contextual, not keyword matching — it understands what the role actually needs
+- Outputs a clean, ATS-safe DOCX — ready to send
+
+---
+
+## Core Features
+
+| Feature | Description |
+|---|---|
+| JD ingestion | URL, pasted text, or local `.txt` file |
+| Fit analysis | Contextual match/gap table per role |
+| Resume tailoring | Reframes and reprioritises existing content only |
+| DOCX output | ATS-safe, single-column Word document |
+| Application tracking | Full pipeline tracker with status flow |
+| Batch processing | Process multiple jobs from a CSV |
+| Anti-fabrication rules | Hard constraints — no invented claims, ever |
+
+---
+
+## How It Works
+
+```
+Your Base Resume (DOCX or PDF)
+         │
+         ▼
+  Claude Code reads resume context
+         │
+         ▼
+  Job Description (URL / paste / .txt file)
+         │
+         ▼
+  JD Analysis — role, skills, domain, seniority
+         │
+         ▼
+  Match/Gap Table — STRONG / PARTIAL / GAP per requirement
+         │
+         ▼
+  Resume Tailoring — reframe, reorder, tighten existing content
+         │
+         ├── Anti-fabrication rules enforced throughout
+         │
+         ▼
+  ATS-Safe DOCX output + application logged to tracker
+```
+
+No API key needed. Runs entirely through [Claude Code](https://claude.ai/code) with a Pro subscription.
+
+---
+
+## Installation
+
+**Requirements:** Python 3.9+, [Claude Code](https://claude.ai/code) (Pro subscription)
 
 ```bash
-git clone https://github.com/harsh779/resume-customiser
+git clone https://github.com/your-username/resume-customiser.git
 cd resume-customiser
 python install.py
 ```
 
-Restart Claude Code. Done.
+The installer will ask for:
+- Where to save your applications (default: `~/Documents/resume-applications`)
+- Your first name (used in output filenames)
+
+Then restart Claude Code.
+
+---
 
 ## Usage
 
-Open Claude Code in any directory and type:
+### Single Job
+
+Open Claude Code in any directory and run:
 
 ```
 /resume-customise
 ```
 
-Choose **Single** (one job) or **Batch** (multiple jobs from CSV).
-
-### Single mode
-Provide when prompted:
+Choose **Single** mode. Provide when prompted:
 - Resume file path (DOCX or PDF)
-- JD — URL or paste text directly
+- Job description — URL, paste, or file path
 - Company name + role title
 
-### Batch mode
-Fill `batch_jobs_template.csv`:
+> **Note:** LinkedIn, Indeed, Glassdoor, and most ATS platforms block scraping.
+> The tool detects these and asks you to paste the JD text instead.
+
+### Batch Mode
+
+Fill in `batch_jobs_template.csv` (copy it to your working directory):
 
 ```csv
 company,role,jd
@@ -55,57 +114,117 @@ McKinsey,Associate,C:\path\to\mckinsey_jd.txt
 ```
 
 The `jd` column accepts:
-- **URL** — scraped automatically (most company career pages work)
-- **Inline text** — paste JD text directly in the cell
+- **URL** — fetched automatically (company career pages)
+- **Inline text** — paste JD directly in the cell
 - **File path** — path to a `.txt` file with the JD
 
-> **Note:** LinkedIn, Indeed, Glassdoor, and ATS platforms block scraping. Paste JD text for these.
+Run `/resume-customise` and choose **Batch** mode.
 
-### Tracker commands
+### Tracker Commands
 
 Say these in Claude Code chat:
 
 ```
 show my applications          → full application table
 show stats                    → pipeline summary
-view application #3           → full detail
+view application #3           → full detail for one application
 update application #3 to applied
 update application #3 to interview
 ```
 
 Status flow: `tailored → applied → phone_screen → interview → offer → rejected / withdrawn`
 
+---
+
 ## Output
 
 Each run creates:
+
 ```
-<applications_repo>/
+<applications-repo>/
 └── Google_SeniorAnalyst_2026-04-26/
-    ├── Harsh_Google.docx      ← your tailored resume
+    ├── YourName_Google.docx   ← tailored resume
     └── jd.txt                 ← JD saved for reference
 ```
 
-Plus an entry in `applications.json` tracker.
+Plus an entry in `applications.json` with match stats, gaps, and status.
 
-## Key rules (enforced by the skill)
+---
 
-- Every bullet point must trace to your base resume
-- Experience chronology is never changed
-- No skills, tools, or metrics are invented
-- Gaps are flagged explicitly, not fabricated
+## Anti-Fabrication Rules
 
-## Files
+Enforced on every output. No exceptions.
 
-| File | Purpose |
-|---|---|
-| `install.py` | One-time installer — sets paths, installs deps, creates repo |
-| `resume-customise.md` | Claude Code command (workflow instructions) |
-| `scripts/parse_resume.py` | Extracts text from DOCX/PDF |
-| `scripts/fetch_jd.py` | Fetches JD from URL or file |
-| `scripts/build_docx.py` | Builds ATS-safe single-column DOCX |
-| `scripts/tracker.py` | Application tracker (add/list/update/view/stats) |
-| `scripts/setup.py` | Python dependency installer |
-| `batch_jobs_template.csv` | Batch mode template |
+- Every bullet traces to your base resume
+- No tools or technologies not in the base resume
+- No metrics not in the base resume
+- No changes to employment dates, employer names, or job titles
+- No achievements not evidenced in the base resume
+- **If the JD requires something missing → it appears in the gap analysis, not the resume**
+- Reframe existing experience; never invent new experience
+
+---
+
+## ATS Compliance
+
+- Single-column layout
+- No tables, images, graphics, or icons
+- No multi-column sections
+- Standard fonts (Calibri)
+- Clear heading hierarchy
+- Contact info in body text (not header/footer)
+
+---
+
+## Project Structure
+
+```
+resume-customiser/
+  install.py                 ← one-time setup (run this first)
+  resume-customise.md        ← Claude Code command (workflow + rules)
+  batch_jobs_template.csv    ← template for batch mode
+  requirements.txt           ← Python dependencies
+
+  scripts/
+    parse_resume.py          ← extract text from DOCX/PDF
+    fetch_jd.py              ← load JD from URL, file, or text
+    build_docx.py            ← generate ATS-safe DOCX from JSON
+    tracker.py               ← application tracker CLI
+    setup.py                 ← Python dependency installer
+
+  assets/                    ← screenshots (see assets/README.md)
+  samples/                   ← anonymised sample outputs
+```
+
+---
+
+## Suggested GitHub Repo Metadata
+
+**Description:**
+> Local-first Claude Code skill that tailors resumes to job descriptions, creates ATS-safe DOCX files, and tracks applications without inventing facts.
+
+**Topics:**
+`resume` `claude-code` `job-search` `ats` `python` `career-tools` `automation`
+
+---
+
+## Roadmap
+
+- [ ] HTML match/gap report output
+- [ ] Cover letter generator (same anti-fabrication rules)
+- [ ] Status dashboard view
+- [ ] PDF output option
+
+---
+
+## Limitations
+
+- Requires Claude Code with Pro subscription (no standalone Python mode)
+- URL fetching fails on LinkedIn, Indeed, Glassdoor, and most ATS portals — paste JD text for these
+- Batch mode still processes jobs sequentially (one Claude session per job)
+- No email or calendar integration
+
+---
 
 ## License
 

@@ -1,0 +1,65 @@
+{
+  "applications": [
+    {
+      "id": 1,
+      "company": "Acme Analytics",
+      "role": "Senior Data Analyst",
+      "date": "2026-01-15",
+      "jd_source": "https://careers.acme-example.com/jobs/senior-data-analyst",
+      "resume_input": "C:/Users/SampleUser/Documents/base_resume.docx",
+      "resume_output": "C:/Users/SampleUser/Documents/resume-applications/Acme_Analytics_Senior_Data_Analyst_2026-01-15/SampleUser_Acme.docx",
+      "match_stats": {
+        "strong": 7,
+        "partial": 3,
+        "gaps": 2
+      },
+      "gaps": [
+        "Tableau experience not evidenced",
+        "Financial services domain not in resume"
+      ],
+      "status": "applied",
+      "last_updated": "2026-01-16"
+    },
+    {
+      "id": 2,
+      "company": "Globex Consumer Goods",
+      "role": "Consumer Insights Manager",
+      "date": "2026-01-20",
+      "jd_source": "pasted text",
+      "resume_input": "C:/Users/SampleUser/Documents/base_resume.docx",
+      "resume_output": "C:/Users/SampleUser/Documents/resume-applications/Globex_Consumer_Goods_Consumer_Insights_Manager_2026-01-20/SampleUser_Globex.docx",
+      "match_stats": {
+        "strong": 9,
+        "partial": 2,
+        "gaps": 4
+      },
+      "gaps": [
+        "Syndicated data (Nielsen/IRI) not explicitly mentioned",
+        "Pricing strategy not evidenced",
+        "Trade promotion experience not in resume",
+        "ANZ market exposure not mentioned"
+      ],
+      "status": "interview",
+      "last_updated": "2026-01-28"
+    },
+    {
+      "id": 3,
+      "company": "Initech Consulting",
+      "role": "Analytics Lead",
+      "date": "2026-02-01",
+      "jd_source": "C:/path/to/initech_jd.txt",
+      "resume_input": "C:/Users/SampleUser/Documents/base_resume.docx",
+      "resume_output": "C:/Users/SampleUser/Documents/resume-applications/Initech_Consulting_Analytics_Lead_2026-02-01/SampleUser_Initech.docx",
+      "match_stats": {
+        "strong": 11,
+        "partial": 1,
+        "gaps": 1
+      },
+      "gaps": [
+        "MBA preferred — not in resume"
+      ],
+      "status": "tailored",
+      "last_updated": "2026-02-01"
+    }
+  ]
+}
