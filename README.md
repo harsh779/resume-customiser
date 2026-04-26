@@ -110,7 +110,7 @@ Fill in `batch_jobs_template.csv` (copy it to your working directory):
 company,role,jd
 Google,Senior Analyst,https://careers.google.com/jobs/...
 Unilever,Insights Manager,We are looking for an Insights Manager who...
-McKinsey,Associate,C:\path\to\mckinsey_jd.txt
+McKinsey,Associate,C:\Users\Harsh\Desktop\mckinsey_jd.txt
 ```
 
 The `jd` column accepts:
